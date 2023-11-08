@@ -9,4 +9,5 @@ setup(
     author_email='t.arobins@gmail.com',
 
     py_modules=['tictactoe'],
+    packages=find_packages(),
 )
