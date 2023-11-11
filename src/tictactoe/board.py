@@ -38,6 +38,10 @@ class Board:
             return self._board[0][0]
         elif self._board[0][2] == self._board[1][1] == self._board[2][0] and self._board[0][2] is not None:
             return self._board[0][2]
+        
+        # Check for cat's game.
+        if not None in self._board:
+            return 'C'
 
         # If there are no winners, return None.
         return None

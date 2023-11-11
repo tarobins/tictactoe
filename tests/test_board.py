@@ -45,6 +45,19 @@ def test_no_winner():
     b[0,2] = 'X'
     assert b.winner() is None
 
+def test_catsgame():
+    b = Board()
+    b[0,0] = 'X'
+    b[0,1] = 'O'
+    b[0,2] = 'X'
+    b[1,0] = 'O'
+    b[1,1] = 'X'
+    b[1,2] = 'O'
+    b[2,0] = 'O'
+    b[2,1] = 'X'
+    b[2,2] = 'O'
+    assert b.winner() == 'C'
+
 def test_array():
     b = Board()
     b[1,1] = 'X'
