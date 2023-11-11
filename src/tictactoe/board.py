@@ -1,6 +1,8 @@
+import numpy as np
+
 class Board:
     def __init__(self):
-        self._board = [[None, None, None], [None, None, None], [None, None, None]]
+        self._board = np.array([[None, None, None], [None, None, None], [None, None, None]])
 
     def __str__(self):
         return str(self._board)
@@ -13,6 +15,9 @@ class Board:
     
     def __setitem__(self, key, value):
         self._board[key[0]][key[1]] = value
+
+    def __array__(self):
+        return self._board.copy()
     
     def winner(self):
 

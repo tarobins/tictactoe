@@ -1,3 +1,4 @@
+import numpy as np
 from tictactoe.board import Board
 
 def test_set_cell():
@@ -43,3 +44,10 @@ def test_no_winner():
     b[0,1] = 'O'
     b[0,2] = 'X'
     assert b.winner() is None
+
+def test_array():
+    b = Board()
+    b[1,1] = 'X'
+    array = np.array(b)
+    assert array[1,1] == 'X'
+    assert array[0,0] is None
