@@ -16,8 +16,8 @@ class Board:
     def __setitem__(self, key, value):
         self._board[key[0]][key[1]] = value
 
-    def __array__(self):
-        return self._board.copy()
+    def __array__(self, dtype=object):
+        return self._board.copy().astype(dtype)
     
     def winner(self):
 
