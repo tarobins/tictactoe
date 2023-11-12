@@ -19,5 +19,4 @@ def test_game_play():
     assert g.play(1,1) is None
     assert g.turn == 'X'
     assert g.play(0,2) == 'X'
-    print(g.board)
 
