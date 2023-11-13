@@ -66,5 +66,7 @@ def test_badplay_o_not_x():
     assert g.play(0,0) == (-100, 'E')
     assert g.turn == 'X'
     assert g.play(0,0) == (0, 'E')
+    assert g.turn == 'O'
+    assert g.play(0,0) == (0, 'E')
     assert g.value('O') == -100
     assert g.value('X') == 0

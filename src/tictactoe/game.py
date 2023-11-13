@@ -8,15 +8,16 @@ class Game:
 
     def play(self, row, col):
         player = self.turn
+        self.turn = 'X' if self.turn == 'O' else 'O'
         if self.board[row, col] is not None:
             if self.penalized_player is None:
                 self.penalized_player = player
-            self.turn = 'X' if self.turn == 'O' else 'O'
-            return self.value(player), 'E'
+                return self.value(player), 'E'
+            else:
+                return 0, 'E'
         if self.penalized_player is not None:
             return self.value(player), 'E'
         self.board[row, col] = player
-        self.turn = 'X' if player == 'O' else 'O'
         return self.value(player), self.board.winner()
 
     def value(self, player):
