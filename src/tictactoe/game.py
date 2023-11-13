@@ -7,13 +7,17 @@ class Game:
         self.penalized_player = None
 
     def play(self, row, col):
-        if self.penalized_player is not None or self.board[row, col] is not None:
-            self.penalized_player = self.turn
+        player = self.turn
+        if self.board[row, col] is not None:
+            if self.penalized_player is None:
+                self.penalized_player = player
             self.turn = 'X' if self.turn == 'O' else 'O'
-            return 'E'
-        self.board[row, col] = self.turn
-        self.turn = 'X' if self.turn == 'O' else 'O'
-        return self.board.winner()
+            return self.value(player), 'E'
+        if self.penalized_player is not None:
+            return self.value(player), 'E'
+        self.board[row, col] = player
+        self.turn = 'X' if player == 'O' else 'O'
+        return self.value(player), self.board.winner()
 
     def value(self, player):
         if self.penalized_player == player:
