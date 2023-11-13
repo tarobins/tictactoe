@@ -47,15 +47,24 @@ def test_catsgame():
     assert g.value('X') == 5
     assert g.value('O') == 5
 
-def test_badplay_x():
+def test_badplay_o():
     g = Game()
     assert g.turn == 'X'
     assert g.play(0,0) == (0, None)
     assert g.turn == 'O'
     assert g.play(0,0) == (-100, 'E')
-    print(f'penalized player {g.penalized_player}')
     assert g.turn == 'X'
-    assert g.play(0,1)[1] is 'E'
-    print(f'penalized player {g.penalized_player}')
+    assert g.play(0,1) == (0, 'E')
+    assert g.value('O') == -100
+    assert g.value('X') == 0
+
+def test_badplay_o_not_x():
+    g = Game()
+    assert g.turn == 'X'
+    assert g.play(0,0) == (0, None)
+    assert g.turn == 'O'
+    assert g.play(0,0) == (-100, 'E')
+    assert g.turn == 'X'
+    assert g.play(0,0) == (0, 'E')
     assert g.value('O') == -100
     assert g.value('X') == 0
