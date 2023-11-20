@@ -6,7 +6,7 @@ class Game:
         self.turn = 'X'
         self.penalized_player = None
 
-    def play(self, row, col):
+    def play_rc(self, row, col):
         player = self.turn
         self.turn = 'X' if self.turn == 'O' else 'O'
         if self.board[row, col] is not None:
