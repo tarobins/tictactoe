@@ -73,3 +73,15 @@ def test_array_int():
     assert array[1,1] == 1
     assert array[0,0] == -1
     assert array[0,1] == 0
+
+def test__str__():
+    b = Board()
+    b[1,1] = 'X'
+    b[0,0] = 'O'
+    assert str(b) == "[['O' None None]\n [None 'X' None]\n [None None None]]"
+
+def test__repr__():
+    b = Board()
+    b[1,1] = 'X'
+    b[0,0] = 'O'
+    assert repr(b) == "[['O' None None]\n [None 'X' None]\n [None None None]]"
