@@ -19,6 +19,12 @@ class Game:
             return self.value(player), 'E'
         self.board[row, col] = player
         return self.value(player), self.board.winner()
+    
+    def play_index(self, index):
+        return self.play_rc(index // 3, index % 3)
+    
+    def get_board_as_vector(self, dtype=int):
+        return self.board.__array__(dtype=dtype).flatten()
 
     def value(self, player):
         if self.penalized_player == player:

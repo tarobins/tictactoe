@@ -1,4 +1,4 @@
-import sys
+import numpy as np
 
 from tictactoe.game import Game
 
@@ -70,3 +70,25 @@ def test_badplay_o_not_x():
     assert g.play_rc(0,0) == (0, 'E')
     assert g.value('O') == -100
     assert g.value('X') == 0
+
+def test_play_index():
+    g = Game()
+    assert g.turn == 'X'
+    assert g.play_index(0)[1] is None
+    assert g.turn == 'O'
+    assert g.play_index(1)[1] is None
+    assert g.turn == 'X'
+    assert g.play_index(3)[1] is None
+    assert g.turn == 'O'
+    assert g.play_index(4)[1] is None
+    assert g.turn == 'X'
+    assert g.play_index(6) == (10, 'X')
+    assert g.value('X') == 10
+    assert g.value('O') == -10
+
+def test_get_board_as_vector():
+    g = Game()
+    g.play_index(0)
+    g.play_index(1)
+    g.play_index(3)
+    np.testing.assert_array_equal(g.get_board_as_vector(), [1, -1, 0, 1, 0, 0, 0, 0, 0])

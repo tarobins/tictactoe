@@ -64,3 +64,12 @@ def test_array():
     array = np.array(b)
     assert array[1,1] == 'X'
     assert array[0,0] is None
+
+def test_array_int():
+    b = Board()
+    b[1,1] = 'X'
+    b[0,0] = 'O'
+    array = np.array(b, dtype=np.int16)
+    assert array[1,1] == 1
+    assert array[0,0] == -1
+    assert array[0,1] == 0

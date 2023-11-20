@@ -17,7 +17,12 @@ class Board:
         self._board[key[0]][key[1]] = value
 
     def __array__(self, dtype=object):
-        return self._board.copy().astype(dtype)
+        board = self._board.copy()
+        if np.issubdtype(dtype, np.number):
+            board[board == 'X'] = 1
+            board[board == 'O'] = -1
+            board[board == None] = 0
+        return board.astype(dtype)
     
     def winner(self):
 
