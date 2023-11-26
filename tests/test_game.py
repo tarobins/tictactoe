@@ -44,6 +44,7 @@ def test_catsgame():
     assert g.play_rc(2,2)[1] is None
     assert g.turn == 'X'
     assert g.play_rc(2,1) == (5, 'C')
+    assert g.winner() == 'C'
     assert g.value('X') == 5
     assert g.value('O') == 5
 
@@ -81,8 +82,10 @@ def test_play_index():
     assert g.play_index(3)[1] is None
     assert g.turn == 'O'
     assert g.play_index(4)[1] is None
+    assert g.winner() is None
     assert g.turn == 'X'
     assert g.play_index(6) == (10, 'X')
+    assert g.winner() == 'X'
     assert g.value('X') == 10
     assert g.value('O') == -10
 

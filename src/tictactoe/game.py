@@ -26,6 +26,9 @@ class Game:
     def get_board_as_vector(self, dtype=int):
         return self.board.__array__(dtype=dtype).flatten()
 
+    def winner(self):
+        return self.board.winner()
+
     def value(self, player):
         if self.penalized_player == player:
             return -100
