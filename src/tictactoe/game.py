@@ -27,6 +27,8 @@ class Game:
         return self.board.__array__(dtype=dtype).flatten()
 
     def winner(self):
+        if self.penalized_player is not None:
+            return 'X' if self.penalized_player == 'O' else 'X'
         return self.board.winner()
 
     def value(self, player):
