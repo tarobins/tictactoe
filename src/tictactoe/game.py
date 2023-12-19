@@ -3,36 +3,35 @@ from tictactoe.board import Board
 class Game:
     def __init__(self):
         self.board = Board()
-        self.turn = 'X'
+        self.next_turn = 'X'
         self.penalized_player = None
         self._x_plays = 0
         self._o_plays = 0
 
     def play_rc(self, row, col):
-        player = self.turn
-        if self.penalized_player is None:
-            if player == 'X':
-                self._x_plays += 1
-            else:
-                self._o_plays += 1
-        self.turn = 'X' if self.turn == 'O' else 'O'
+        turn = self.next_turn
+        self.next_turn = 'X' if self.next_turn == 'O' else 'O'
+        if self.penalized_player is not None:
+            return 0, 'E'
+        if turn == 'X':
+            self._x_plays += 1
+        else:
+            self._o_plays += 1
         if self.board[row, col] is not None:
             if self.penalized_player is None:
-                self.penalized_player = player
-                if player == 'X':
+                self.penalized_player = turn
+                if turn == 'X':
                     self._x_plays -= 1
                 else:
                     self._o_plays -= 1
-                return self.value(player), 'E'
+                return self.value(turn), 'E'
             else:
                 return 0, 'E'
-        if self.penalized_player is not None:
-            return 0, 'E'
-        self.board[row, col] = player
+        self.board[row, col] = turn
         if self.board.winner() is None:
             return 1, None
         else:
-            if self.board.winner() == player:
+            if self.board.winner() == turn:
                 return 11, self.board.winner()
             else:
                 return 1, self.board.winner()
