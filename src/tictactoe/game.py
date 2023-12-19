@@ -5,20 +5,37 @@ class Game:
         self.board = Board()
         self.turn = 'X'
         self.penalized_player = None
+        self._x_plays = 0
+        self._o_plays = 0
 
     def play_rc(self, row, col):
         player = self.turn
+        if self.penalized_player is None:
+            if player == 'X':
+                self._x_plays += 1
+            else:
+                self._o_plays += 1
         self.turn = 'X' if self.turn == 'O' else 'O'
         if self.board[row, col] is not None:
             if self.penalized_player is None:
                 self.penalized_player = player
+                if player == 'X':
+                    self._x_plays -= 1
+                else:
+                    self._o_plays -= 1
                 return self.value(player), 'E'
             else:
                 return 0, 'E'
         if self.penalized_player is not None:
-            return self.value(player), 'E'
+            return 0, 'E'
         self.board[row, col] = player
-        return self.value(player), self.board.winner()
+        if self.board.winner() is None:
+            return 1, None
+        else:
+            if self.board.winner() == player:
+                return 11, self.board.winner()
+            else:
+                return 1, self.board.winner()
     
     def play_index(self, index):
         return self.play_rc(index // 3, index % 3)
@@ -32,13 +49,17 @@ class Game:
         return self.board.winner()
 
     def value(self, player):
-        if self.penalized_player == player:
-            return -100
-        elif self.board.winner() == player:
-            return 10
-        elif self.board.winner() == 'C':
-            return 5
-        elif self.board.winner() is None:
-            return 0
+        if player == 'X':
+            plays = self._x_plays
         else:
-            return -10
+            plays = self._o_plays
+        if self.penalized_player == player:
+            return -100 + plays
+        elif self.board.winner() == player:
+            return 10 + plays
+        elif self.board.winner() == 'C':
+            return plays
+        elif self.board.winner() is None:
+            return plays
+        else:
+            return -10 + plays
