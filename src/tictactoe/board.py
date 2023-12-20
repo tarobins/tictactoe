@@ -39,18 +39,18 @@ class Board:
 
         # Check for horizontal wins.
         for row in range(3):
-            if self._board[row][0] == self._board[row][1] == self._board[row][2] and self._board[row][0] is not None:
+            if self._board[row][0] == self._board[row][1] == self._board[row][2] and self._board[row][0] != 0:
                 return _to_name(self._board[row][0])
 
         # Check for vertical wins.
         for col in range(3):
-            if self._board[0][col] == self._board[1][col] == self._board[2][col] and self._board[0][col] is not None:
+            if self._board[0][col] == self._board[1][col] == self._board[2][col] and self._board[0][col] != 0:
                 return _to_name(self._board[0][col])
 
         # Check for diagonal wins.
-        if self._board[0][0] == self._board[1][1] == self._board[2][2] and self._board[0][0] is not None:
+        if self._board[0][0] == self._board[1][1] == self._board[2][2] and self._board[0][0] != 0:
             return _to_name(self._board[0][0])
-        elif self._board[0][2] == self._board[1][1] == self._board[2][0] and self._board[0][2] is not None:
+        elif self._board[0][2] == self._board[1][1] == self._board[2][0] and self._board[0][2] != 0:
             return _to_name(self._board[0][2])
         
         # Check for cat's game.

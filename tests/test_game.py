@@ -107,6 +107,24 @@ def test_play_index():
     assert g.value('X') == 13
     assert g.value('O') == -8
 
+def test_play_index2():
+    g = Game()
+    assert g.next_turn == 'X'
+    assert g.play_index(6)[1] is None
+    assert g.next_turn == 'O'
+    assert g.play_index(0)[1] is None
+    assert g.next_turn == 'X'
+    assert g.play_index(7)[1] is None
+    assert g.next_turn == 'O'
+    assert g.play_index(1)[1] is None
+    assert g.winner() is None
+    assert g.next_turn == 'X'
+    assert g.play_index(8) == (11, 'X')
+    assert g.winner() == 'X'
+    assert g.value('X') == 13
+    assert g.value('O') == -8
+
+
 def test_get_board_as_vector():
     g = Game()
     g.play_index(0)
