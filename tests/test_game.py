@@ -131,3 +131,10 @@ def test_get_board_as_vector():
     g.play_index(1)
     g.play_index(3)
     np.testing.assert_array_equal(g.get_board_as_vector(), [1, -1, 0, 1, 0, 0, 0, 0, 0])
+
+def test_get_board_as_bit_vector():
+    g = Game()
+    g.play_index(0)
+    g.play_index(1)
+    g.play_index(3)
+    np.testing.assert_array_equal(g.get_board_as_bit_vector(), [1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0])

@@ -1,3 +1,5 @@
+import numpy as np
+
 from tictactoe.board import Board
 
 class Game:
@@ -41,6 +43,10 @@ class Game:
     
     def get_board_as_vector(self, dtype=int):
         return self.board.__array__(dtype=dtype).flatten()
+    
+    def get_board_as_bit_vector(self):
+        board_as_vector = self.get_board_as_vector()
+        return np.concatenate([(board_as_vector == 1).astype(np.uint8), (board_as_vector == -1).astype(int)], axis=0)
 
     def winner(self):
         if self.penalized_player is not None:
