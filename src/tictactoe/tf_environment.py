@@ -17,10 +17,6 @@ class TicTacToeEnv(py_environment.PyEnvironment):
     self._action_spec = action_spec
     self._observation_spec = observation_spec
     self._state = tictactoe.Game()
-    self.x_policy = None        
-    self.x_policy_state = None
-    self.o_policy = None
-    self.o_policy_state = None
     self.reset()
 
   def action_spec(self):
@@ -31,9 +27,6 @@ class TicTacToeEnv(py_environment.PyEnvironment):
 
   def _reset(self):
     self._state = tictactoe.Game()
-    self.x_policy_state = None
-    self.o_policy_state = None
-    self._auto_step()
     return ts.restart(np.array(self._state.get_board_as_bit_vector(), dtype=np.int32))
 
   def _step(self, action):
@@ -42,27 +35,8 @@ class TicTacToeEnv(py_environment.PyEnvironment):
       res = self.reset()
       return res
     reward, winner = self._state.play_index(action)
-    auto_winner = None
-    if self._state.winner() is None:
-      auto_winner = self._auto_step()
 
-    if winner == None and auto_winner == None:
+    if winner == None:
       return ts.transition(np.array(self._state.get_board_as_bit_vector(), dtype=np.int32 ), reward=reward)
     else:
       return ts.termination(np.array(self._state.get_board_as_bit_vector(), dtype=np.int32), reward=reward)
-
-  def _auto_step(self):
-    if self.x_policy != None and self.x_policy_state == None:
-      self.x_policy_state = self.x_policy.get_initial_state()
-    if self.o_policy != None and self.o_policy_state == None:
-      self.o_policy_state = self.o_policy.get_initial_state()
-    if self._state.next_turn == 'X' and self.x_policy != None:
-      x_action = self.x_policy.action(self.current_time_step(), self.x_policy_state)
-      self.x_policy_state = x_action.state
-      _, winner = self._state.play_index(x_action.action)
-      return winner
-    if self._state.next_turn == 'O' and self.o_policy != None:
-      o_action = self.o_policy.action(self.current_time_step(), self.o_policy_state)
-      self.o_policy_state = o_action.state
-      _, winner = self._state.play_index(o_action.action)
-      return winner
