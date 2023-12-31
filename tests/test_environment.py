@@ -9,23 +9,23 @@ def test_no_auto():
     assert state.step_type == 0
     assert state.reward == 0
     assert state.discount == 1
-    assert (state.observation == np.array([0,0,0,0,0,0,0,0,0])).all()
+    assert (state.observation == np.array([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])).all()
 
     state = env.step(6)
-    assert (state.observation == np.array([0,0,0,0,0,0,1,0,0])).all()
+    assert (state.observation == np.array([0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0])).all()
     
     state = env.step(0)
-    assert (state.observation == np.array([-1,0,0,0,0,0,1,0,0])).all()
+    assert (state.observation == np.array([0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0])).all()
 
     state = env.step(7)
-    assert (state.observation == np.array([-1,0,0,0,0,0,1,1,0])).all()
+    assert (state.observation == np.array([0,0,0,0,0,0,1,1,0,1,0,0,0,0,0,0,0,0])).all()
 
     state = env.step(1)
-    assert (state.observation == np.array([-1,-1,0,0,0,0,1,1,0])).all()
+    assert (state.observation == np.array([0,0,0,0,0,0,1,1,0,1,1,0,0,0,0,0,0,0])).all()
     assert state.reward == 1
 
     state = env.step(8)
-    assert (state.observation == np.array([-1,-1,0,0,0,0,1,1,1])).all()
+    assert (state.observation == np.array([0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0])).all()
     assert state.reward == 11
 
 def test_bad_play():
@@ -45,9 +45,9 @@ def test_autoplay_x():
     env.x_policy = scripted_x_policy
 
     state = env.reset()
-    assert (state.observation == np.array([1,0,0,0,0,0,0,0,0])).all()
+    assert (state.observation == np.array([1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])).all()
     state = env.step(6)
-    assert (state.observation == np.array([1,1,0,0,0,0,-1,0,0])).all()
+    assert (state.observation == np.array([1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0])).all()
 
 def test_autoplay_o():
     env = TicTacToeEnv()
@@ -58,6 +58,6 @@ def test_autoplay_o():
 
     state = env.reset()
     state = env.step(6)
-    assert (state.observation == np.array([-1,0,0,0,0,0,1,0,0])).all()
+    assert (state.observation == np.array([0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0])).all()
 
 

@@ -8,7 +8,7 @@ from tf_agents.trajectories import time_step as ts
 import tictactoe
 
 observation_spec = array_spec.ArraySpec(
-        shape=(9,), dtype=np.int32,  name='observation')
+        shape=(18,), dtype=np.uint8,  name='observation')
 action_spec = array_spec.BoundedArraySpec(
         shape=(), dtype=np.int32, minimum=0, maximum=8, name='action')
 
@@ -34,7 +34,7 @@ class TicTacToeEnv(py_environment.PyEnvironment):
     self.x_policy_state = None
     self.o_policy_state = None
     self._auto_step()
-    return ts.restart(np.array(self._state.get_board_as_vector(dtype=np.int32), dtype=np.int32))
+    return ts.restart(np.array(self._state.get_board_as_bit_vector(), dtype=np.int32))
 
   def _step(self, action):
     turn = self._state.next_turn
@@ -47,9 +47,9 @@ class TicTacToeEnv(py_environment.PyEnvironment):
       auto_winner = self._auto_step()
 
     if winner == None and auto_winner == None:
-      return ts.transition(np.array(self._state.get_board_as_vector(dtype=np.int32), dtype=np.int32 ), reward=reward)
+      return ts.transition(np.array(self._state.get_board_as_bit_vector(), dtype=np.int32 ), reward=reward)
     else:
-      return ts.termination(np.array(self._state.get_board_as_vector(dtype=np.int32), dtype=np.int32), reward=reward)
+      return ts.termination(np.array(self._state.get_board_as_bit_vector(), dtype=np.int32), reward=reward)
 
   def _auto_step(self):
     if self.x_policy != None and self.x_policy_state == None:
