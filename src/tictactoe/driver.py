@@ -19,31 +19,17 @@ def drive(env, x_policy, o_policy):
     x_policy_state = x_policy.get_initial_state()
     o_policy_state = o_policy.get_initial_state()
 
-    initial_time_step = env.reset()
+    time_step = env.reset()
 
     turn = 0
     while True:
-
-        # print(f'x turn: {turn}')
-
         time_step, x_policy_state = x_driver.run(
-            initial_time_step, policy_state=x_policy_state)
-
-        # print(time_step)
-        # print(x_policy_state)
-
+            time_step, policy_state=x_policy_state)
         if time_step.is_last():
             break
-
-        # print(f'o turn: {turn}')
-
         time_step, o_policy_state = o_driver.run(
             time_step, policy_state=o_policy_state)
-
-        # print(time_step)
-        # print(o_policy_state)
-
         if time_step.is_last():
             break
 
-    return 'X', x_buffer, o_buffer
+    return x_buffer, o_buffer
