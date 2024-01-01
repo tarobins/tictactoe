@@ -34,3 +34,6 @@ def test_driver_cats():
 
     assert x_history[-1].reward == 1
     assert x_history[-1].is_last()
+
+    assert o_history[-1].reward == 1
+    assert not o_history[-1].is_last()
