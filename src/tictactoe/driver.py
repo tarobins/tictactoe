@@ -2,7 +2,7 @@ from tf_agents.drivers import py_driver
 from tf_agents.policies import random_py_policy
 from tictactoe.tf_environment import TicTacToeEnv, action_spec
 
-def drive(env, x_policy, o_policy):
+def play_game(env, x_policy, o_policy):
     x_buffer = []
     o_buffer = []
 
