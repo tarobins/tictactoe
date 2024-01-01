@@ -1,4 +1,4 @@
-from tictactoe.driver import play_game
+from tictactoe.driver import play_game, battle
 from tictactoe.tf_environment import TicTacToeEnv, action_spec
 from tf_agents.policies import scripted_py_policy
 
@@ -52,3 +52,20 @@ def test_play_game_cats():
 
     assert o_history[-1].reward == 1
     assert o_history[-1].is_mid()
+
+def test_battle():
+    x_policy_x_win = scripted_py_policy.ScriptedPyPolicy(
+        time_step_spec=None, 
+        action_spec=action_spec, action_script=[(1, 0), (1, 1), (1, 2)])
+    
+    o_policy_o_win = scripted_py_policy.ScriptedPyPolicy(
+        time_step_spec=None, 
+        action_spec=action_spec, action_script=[(1, 3), (1, 4)])
+    
+    env = TicTacToeEnv()
+
+    x_wins, o_wins, cats = battle(env, x_policy_x_win, o_policy_o_win, 100)
+
+    assert x_wins == 100
+    assert o_wins == 0
+    assert cats == 0
