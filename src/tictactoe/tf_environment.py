@@ -8,7 +8,7 @@ from tf_agents.trajectories import time_step as ts
 import tictactoe
 
 observation_spec = array_spec.ArraySpec(
-        shape=(20,), dtype=np.uint8,  name='observation')
+        shape=(18,), dtype=np.uint8,  name='observation')
 action_spec = array_spec.BoundedArraySpec(
         shape=(), dtype=np.int32, minimum=0, maximum=8, name='action')
 
