@@ -34,6 +34,22 @@ def test_play_game_o_wins():
     assert o_history[-1].reward == 11
     assert o_history[-1].is_last()
 
+def test_play_game_o_bad():
+    x_policy = scripted_py_policy.ScriptedPyPolicy(
+        time_step_spec=None, 
+        action_spec=action_spec, action_script=[(1, 0)])
+    
+    o_policy = scripted_py_policy.ScriptedPyPolicy(
+        time_step_spec=None, 
+        action_spec=action_spec, action_script=[(1, 0)])
+    
+    env = TicTacToeEnv()
+
+    _, o_history = play_game(env, x_policy, o_policy)
+
+    assert o_history[-1].reward == -100
+    assert o_history[-1].is_last()
+
 def test_play_game_cats():
     x_policy = scripted_py_policy.ScriptedPyPolicy(
         time_step_spec=None, 
@@ -64,8 +80,8 @@ def test_battle():
     
     env = TicTacToeEnv()
 
-    x_wins, o_wins, cats = battle(env, x_policy_x_win, o_policy_o_win, 100)
+    x_rewards, o_rewards = battle(env, x_policy_x_win, o_policy_o_win, 100)
 
-    assert x_wins == 100
-    assert o_wins == 0
-    assert cats == 0
+    assert x_rewards == 13
+    assert o_rewards == 2
+    

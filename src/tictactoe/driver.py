@@ -35,17 +35,12 @@ def play_game(env, x_policy, o_policy):
     return x_buffer, o_buffer
 
 def battle(env, x_policy, o_policy, num_games):
-    x_wins = 0
-    o_wins = 0
-    cats = 0
+    x_rewards = 0
+    o_rewards = 0
 
     for _ in range(num_games):
         x_history, o_history = play_game(env, x_policy, o_policy)
-        if x_history[-1].reward == 11:
-            x_wins += 1
-        elif o_history[-1].reward == 11:
-            o_wins += 1
-        else:
-            cats += 1
+        x_rewards = x_rewards + sum(map(lambda ts: ts.reward, x_history))
+        o_rewards = o_rewards + sum(map(lambda ts: ts.reward, o_history))
 
-    return x_wins, o_wins, cats
+    return x_rewards / num_games, o_rewards / num_games
