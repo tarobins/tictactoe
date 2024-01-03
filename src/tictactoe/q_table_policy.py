@@ -13,7 +13,7 @@ class QTablePolicy(py_policy.PyPolicy):
                     time_step_spec: TimeStep,
                     action_spec: NestedArray,
                     q_init = 0.6,
-                    learning_rate: float = 0.9,
+                    learning_rate: float = 0.6,
                     name: str = None, ) -> None:
             self.q = {}
             self.q_init = q_init
