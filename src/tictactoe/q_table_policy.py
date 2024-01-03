@@ -2,6 +2,7 @@ import numpy as np
 
 from typing import Optional
 from tf_agents.policies import py_policy
+from tf_agents.policies.random_py_policy import RandomPyPolicy
 from tf_agents.trajectories.policy_step import PolicyStep
 from tf_agents.trajectories.time_step import TimeStep
 from tf_agents.typing.types import NestedArray, Seed
@@ -16,8 +17,10 @@ class QTablePolicy(py_policy.PyPolicy):
                     learning_rate: float = 0.6,
                     name: str = None, ) -> None:
             self.q = {}
+            self.eps = 0
             self.q_init = q_init
             self.learning_rate = learning_rate
+            self._random = RandomPyPolicy(time_step_spec, action_spec)
             super().__init__(time_step_spec, action_spec)
 
     def _get_q(self, board_hash):
@@ -31,6 +34,9 @@ class QTablePolicy(py_policy.PyPolicy):
                 seed: Seed | None = None) -> PolicyStep:
         # print(f'>>>>>>>>> {time_step} >>>>>>> {policy_state} >>>>>> {seed}')
         board_hash = hash_board(time_step.observation)
+        if np.random.random() < self.eps:
+            # print('random action')
+            return self._random.action(time_step)
         q = self._get_q(board_hash)
         move = np.argmax(q)
         return PolicyStep(action=move, state=policy_state, info=())

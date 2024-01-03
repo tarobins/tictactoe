@@ -18,46 +18,59 @@ random_py_policy = random_py_policy.RandomPyPolicy(
 # print(f'x_q vs o_q before training x: {x_rewards} o: {o_rewards}')
 
 train_episodes = 10
+train_cycles = 1000
+eval_episodes = 100
 
-x_rewards, o_rewards, x_wins, o_winds = battle(env, x_policy, o_policy, 100)
+x_rewards, o_rewards, x_wins, o_winds = battle(env, x_policy, o_policy, eval_episodes)
 print(f'>>>> x_q vs o_q before training x: {x_rewards} o: {o_rewards} x_wins: {x_wins} o_wins: {o_winds}')
 
-x_rewards, o_rewards, x_wins, o_wins = battle(env, x_policy, random_py_policy, 100)
+x_rewards, o_rewards, x_wins, o_wins = battle(env, x_policy, random_py_policy, eval_episodes)
 print(f'>>>> x_q vs random before training x: {x_rewards} o: {o_rewards} x_wins: {x_wins} o_wins: {o_wins}')
 
 def train(x_history, o_history):
     x_policy.train(x_history)
 
-for i in range(1000):
+for i in range(train_cycles):
+
+    eps = (1000 - i) / 1000 * 0.4
+    x_policy.eps = eps
 
     x_rewards, o_rewards, x_wins, o_wins = battle(env, x_policy, random_py_policy, train_episodes, train)
     if i % 100 == 0:
-        x_rewards, o_rewards, x_wins, o_wins = battle(env, x_policy, random_py_policy, 100) 
+        x_policy.eps = 0
+        x_rewards, o_rewards, x_wins, o_wins = battle(env, x_policy, random_py_policy, eval_episodes) 
         print(f'x_q vs random after {i * train_episodes} x: {x_rewards} o: {o_rewards}')
 
-
-x_rewards, o_rewards, x_wins, o_wins = battle(env, x_policy, o_policy, 100)
+x_policy.eps = 0
+x_rewards, o_rewards, x_wins, o_wins = battle(env, x_policy, o_policy, eval_episodes)
 print(f'>>>> x_q vs o_q after training x: {x_rewards} o: {o_rewards} x_wins: {x_wins} o_wins: {o_wins}')
 
-x_rewards, o_rewards, x_wins, o_wins = battle(env, x_policy, random_py_policy, 100)
+x_rewards, o_rewards, x_wins, o_wins = battle(env, x_policy, random_py_policy, eval_episodes)
 print(f'>>>> x_q vs random after training x: {x_rewards} o: {o_rewards} x_wins: {x_wins} o_wins: {o_wins}')
 
 def train(x_history, o_history):
     x_policy.train(x_history)
     o_policy.train(o_history)
 
-for i in range(1000):
+for i in range(train_cycles):
+
+    eps = (train_cycles - i) / train_cycles * 0.2
+    x_policy.eps = eps
+    o_policy.eps = eps
 
     x_rewards, o_rewards, x_wins, o_wins = battle(env, x_policy, o_policy, train_episodes, train)
     if i % 100 == 0:
-        x_rewards, o_rewards, x_wins, o_wins = battle(env, x_policy, o_policy, 100) 
+        x_policy.eps = 0
+        o_policy.eps = 0
+        x_rewards, o_rewards, x_wins, o_wins = battle(env, x_policy, o_policy, eval_episodes) 
         print(f'x_q vs o_q after {i * train_episodes} x: {x_rewards} o: {o_rewards}')
 
-
-x_rewards, o_rewards, x_wins, o_wins = battle(env, x_policy, o_policy, 100)
+x_policy.eps = 0
+o_policy.eps = 0
+x_rewards, o_rewards, x_wins, o_wins = battle(env, x_policy, o_policy, eval_episodes)
 print(f'>>>> x_q vs o_q after training x: {x_rewards} o: {o_rewards} x_wins: {x_wins} o_wins: {o_wins}')
 
-x_rewards, o_rewards, x_wins, o_wins = battle(env, x_policy, random_py_policy, 100)
+x_rewards, o_rewards, x_wins, o_wins = battle(env, x_policy, random_py_policy, eval_episodes)
 print(f'>>>> x_q vs random after training x: {x_rewards} o: {o_rewards} x_wins: {x_wins} o_wins: {o_wins}')
 
 # for i in range(1000):
