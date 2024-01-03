@@ -84,4 +84,27 @@ def test_battle():
 
     assert x_rewards == 13
     assert o_rewards == 2
+
+def test_battle_callback():
+    x_policy_x_win = scripted_py_policy.ScriptedPyPolicy(
+        time_step_spec=None, 
+        action_spec=action_spec, action_script=[(1, 0), (1, 1), (1, 2)])
+    
+    o_policy_o_win = scripted_py_policy.ScriptedPyPolicy(
+        time_step_spec=None, 
+        action_spec=action_spec, action_script=[(1, 3), (1, 4)])
+    
+    env = TicTacToeEnv()
+
+    num_calls = 0
+
+    def callback(x_history, o_history):
+        nonlocal num_calls
+        num_calls = num_calls + 1
+
+    x_rewards, o_rewards = battle(env, x_policy_x_win, o_policy_o_win, 100, callback)
+
+    assert x_rewards == 13
+    assert o_rewards == 2
+    assert num_calls == 100
     

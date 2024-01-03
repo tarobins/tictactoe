@@ -34,13 +34,23 @@ def play_game(env, x_policy, o_policy):
 
     return x_buffer, o_buffer
 
-def battle(env, x_policy, o_policy, num_games):
+def battle(env, x_policy, o_policy, num_games, game_callback=None):
     x_rewards = 0
     o_rewards = 0
+    x_wins = 0
+    o_wins = 0
 
     for _ in range(num_games):
         x_history, o_history = play_game(env, x_policy, o_policy)
+        if game_callback:
+            game_callback(x_history, o_history)
+        game_x_rewards = sum(map(lambda ts: ts.reward, x_history))
+        game_o_rewards = sum(map(lambda ts: ts.reward, o_history))
+        if game_x_rewards >= 10:
+            x_wins = x_wins + 1
+        elif game_o_rewards >= 10:
+            o_wins = o_wins + 1
         x_rewards = x_rewards + sum(map(lambda ts: ts.reward, x_history))
         o_rewards = o_rewards + sum(map(lambda ts: ts.reward, o_history))
 
-    return x_rewards / num_games, o_rewards / num_games
+    return x_rewards / num_games, o_rewards / num_games, x_wins, o_wins
