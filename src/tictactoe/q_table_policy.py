@@ -12,9 +12,12 @@ class QTablePolicy(py_policy.PyPolicy):
     def __init__(self,
                     time_step_spec: TimeStep,
                     action_spec: NestedArray,
-                    name: str = None, q_init = 0.6) -> None:
+                    q_init = 0.6,
+                    learning_rate: float = 0.9,
+                    name: str = None, ) -> None:
             self.q = {}
             self.q_init = q_init
+            self.learning_rate = learning_rate
             super().__init__(time_step_spec, action_spec)
 
     def _get_q(self, board_hash):
@@ -33,5 +36,12 @@ class QTablePolicy(py_policy.PyPolicy):
         return PolicyStep(action=move, state=policy_state, info=())
 
     def train(self, experience):
-        q = self._get_q(hash_board(experience[0].observation))
-        q[experience[0].action] = experience[0].reward
+        reversed_experience = experience[::-1]
+        for i, exp in enumerate(reversed_experience):
+            q = self._get_q(hash_board(exp.observation))
+            if i == 0:
+                q[exp.action] = exp.reward
+            else:
+                q[exp.action] = (1 - self.learning_rate) * q[exp.action] + exp.discount * self.learning_rate * next_max
+            next_max = max(q)
+        

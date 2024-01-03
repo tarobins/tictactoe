@@ -27,7 +27,7 @@ def test_q_table_policy_driver():
 
     assert (time_step.observation == expected).all()
 
-def test_train():
+def test_train_one_turn():
     env = TicTacToeEnv()
     x_policy = QTablePolicy(time_step_spec=env.time_step_spec(), 
                                   action_spec=env.action_spec())
@@ -41,9 +41,29 @@ def test_train():
     x_policy.train(x_history)
     o_policy.train(o_history)
 
-    print(x_policy.q)
-    print(o_policy.q)
-
     assert x_policy.q[hash_board(x_history[0].observation)][x_history[0].action] == 1
     assert o_policy.q[hash_board(o_history[0].observation)][o_history[0].action] == -100
+
+def test_train_two_turn_game():
+    env = TicTacToeEnv()
+    x_policy = QTablePolicy(time_step_spec=env.time_step_spec(), 
+                                  action_spec=env.action_spec())
+    
+    o_policy = QTablePolicy(time_step_spec=env.time_step_spec(),
+                            action_spec=env.action_spec())
+    
+    
+    x_history, o_history = play_game(env, x_policy, o_policy)
+
+    x_policy.train(x_history)
+    o_policy.train(o_history)
+
+    x_history, o_history = play_game(env, x_policy, o_policy)
+
+    x_policy.train(x_history)
+    o_policy.train(o_history)
+
+    assert x_policy.q[hash_board(x_history[-1].observation)][x_history[-1].action] == -99
+    assert o_policy.q[hash_board(o_history[-1].observation)][o_history[-1].action] == 1
+
     
