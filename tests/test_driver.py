@@ -13,10 +13,12 @@ def test_play_game_x_wins():
     
     env = TicTacToeEnv()
 
-    x_history, _ = play_game(env, x_policy, o_policy)
+    x_history, o_history = play_game(env, x_policy, o_policy)
 
     assert x_history[-1].reward == 11
     assert x_history[-1].is_last()
+    assert o_history[-1].reward == -19
+    assert o_history[-1].is_mid()
 
 def test_play_game_o_wins():
     x_policy = scripted_py_policy.ScriptedPyPolicy(
@@ -29,10 +31,11 @@ def test_play_game_o_wins():
     
     env = TicTacToeEnv()
 
-    _, o_history = play_game(env, x_policy, o_policy)
+    x_history, o_history = play_game(env, x_policy, o_policy)
 
     assert o_history[-1].reward == 11
     assert o_history[-1].is_last()
+    assert x_history[-1].reward == -19
 
 def test_play_game_o_bad():
     x_policy = scripted_py_policy.ScriptedPyPolicy(
@@ -80,10 +83,12 @@ def test_battle():
     
     env = TicTacToeEnv()
 
-    x_rewards, o_rewards = battle(env, x_policy_x_win, o_policy_o_win, 100)
+    x_rewards, o_rewards, x_wins, o_wins = battle(env, x_policy_x_win, o_policy_o_win, 100)
 
     assert x_rewards == 13
-    assert o_rewards == 2
+    assert o_rewards == -18
+    assert x_wins == 100
+    assert o_wins == 0
 
 def test_battle_callback():
     x_policy_x_win = scripted_py_policy.ScriptedPyPolicy(
@@ -102,9 +107,7 @@ def test_battle_callback():
         nonlocal num_calls
         num_calls = num_calls + 1
 
-    x_rewards, o_rewards = battle(env, x_policy_x_win, o_policy_o_win, 100, callback)
+    _ = battle(env, x_policy_x_win, o_policy_o_win, 100, callback)
 
-    assert x_rewards == 13
-    assert o_rewards == 2
     assert num_calls == 100
     

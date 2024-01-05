@@ -26,10 +26,14 @@ def play_game(env, x_policy, o_policy):
         time_step, x_policy_state = x_driver.run(
             time_step, policy_state=x_policy_state)
         if time_step.is_last():
+            if x_buffer[-1].reward >= 10:
+                o_buffer[-1] = o_buffer[-1].replace(reward=o_buffer[-1].reward - 20)
             break
         time_step, o_policy_state = o_driver.run(
             time_step, policy_state=o_policy_state)
         if time_step.is_last():
+            if o_buffer[-1].reward >= 10:
+                x_buffer[-1] = x_buffer[-1].replace(reward=x_buffer[-1].reward - 20)
             break
 
     return x_buffer, o_buffer
